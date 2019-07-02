@@ -151,6 +151,12 @@ Revision: $Rev: 13430 $
   #endif
 #endif
 
+#undef SEGGER_RTT_LOCK
+#undef SEGGER_RTT_UNLOCK
+
+#define SEGGER_RTT_LOCK()    __disable_irq()
+#define SEGGER_RTT_UNLOCK()  __enable_irq()
+
 /*********************************************************************
 *
 *       RTT lock configuration fallback
