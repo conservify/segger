@@ -67,8 +67,6 @@ Revision: $Rev: 13430 $
   #include <intrinsics.h>
 #endif
 
-#include <sam.h>
-
 /*********************************************************************
 *
 *       Defines, configurable
@@ -151,11 +149,15 @@ Revision: $Rev: 13430 $
   #endif
 #endif
 
+#if defined(__SAMD51__)
+#include <sam.h>
+
 #undef SEGGER_RTT_LOCK
 #undef SEGGER_RTT_UNLOCK
 
 #define SEGGER_RTT_LOCK()    __disable_irq()
 #define SEGGER_RTT_UNLOCK()  __enable_irq()
+#endif
 
 /*********************************************************************
 *
