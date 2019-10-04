@@ -529,7 +529,7 @@ unsigned SEGGER_RTT_ReadUpNoLock(unsigned BufferIndex, void* pData, unsigned Buf
   unsigned                RdOff;
   unsigned                WrOff;
   unsigned char*          pBuffer;
-  SEGGER_RTT_BUFFER_DOWN* pRing;
+  SEGGER_RTT_BUFFER_UP*   pRing;
 #if SEGGER_RTT_MEMCPY_USE_BYTELOOP
   const char*             pSrc;
 #endif
