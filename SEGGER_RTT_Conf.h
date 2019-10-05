@@ -137,9 +137,8 @@ Revision: $Rev: 13430 $
 // Default configuration in FreeRTOS: configMAX_SYSCALL_INTERRUPT_PRIORITY: ( configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 // In case of doubt mask all interrupts: 1 << (8 - BASEPRI_PRIO_BITS) i.e. 1 << 5 when 3 bits are implemented in NVIC
 // or define SEGGER_RTT_LOCK() to completely disable interrupts.
-//
 
-#define SEGGER_RTT_MAX_INTERRUPT_PRIORITY         (0x20)   // Interrupt priority to lock on SEGGER_RTT_LOCK on Cortex-M3/4 (Default: 0x20)
+#define SEGGER_RTT_MAX_INTERRUPT_PRIORITY         (1 << 5)
 
 /*********************************************************************
 *
@@ -147,7 +146,7 @@ Revision: $Rev: 13430 $
 *       Rowley CrossStudio and GCC
 */
 #if (defined __SES_ARM) || (defined __CROSSWORKS_ARM) || (defined __GNUC__) || (defined __clang__)
-  #if (defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__) || defined(__ARM_ARCH_8M_MAIN__))
+  #if (defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__) || defined(__ARM_ARCH_8M_MAIN__)) || defined(__SAMD51__)
     #define SEGGER_RTT_LOCK()   {                                                                   \
                                     unsigned int LockState;                                         \
                                   __asm volatile ("mrs   %0, basepri  \n\t"                         \
@@ -166,16 +165,6 @@ Revision: $Rev: 13430 $
                                 }
 
   #endif
-#endif
-
-#if defined(__SAMD51__)
-#include <sam.h>
-
-#undef SEGGER_RTT_LOCK
-#undef SEGGER_RTT_UNLOCK
-
-#define SEGGER_RTT_LOCK()    __disable_irq()
-#define SEGGER_RTT_UNLOCK()  __enable_irq()
 #endif
 
 /*********************************************************************
